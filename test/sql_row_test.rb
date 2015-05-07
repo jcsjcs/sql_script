@@ -48,8 +48,7 @@ class TestSqlRow < Minitest::Test
   def test_insert_sql
     exp =  <<EOS
 INSERT INTO lists (id, text, num, dt, tm)
-VALUES (12, 'A String', 12.123, '2015-01-01', '2015-01-01T10:01:22+02:00')
-GO
+VALUES (12, 'A String', 12.123, '2015-01-01', '2015-01-01T10:01:22+02:00');
 EOS
     row        = SqlRow.new(SqlRowType.new('lists', :id => :integer, :text => :string, :num => :numeric, :dt => :date, :tm => :time))
     row[:id]   = 12

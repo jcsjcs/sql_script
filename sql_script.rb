@@ -1,7 +1,7 @@
 # Produce a script of insert statements wrapped in a transaction.
 #
 # Example:
-# 
+#
 #    script     = SqlScript.new(:postgresql)
 #    row        = SqlRow.new(SqlRowType.new('lists', :id => :integer, :text => :string, :num => :numeric, :dt => :date, :tm => :time))
 #    row[:id]   = 12
@@ -20,8 +20,8 @@ class SqlScript
   attr_reader :db_type
   attr_accessor :rows
 
-  TRANSACTION_START = {:sql_server => 'BEGIN TRANSACTION',      :postgresql => 'BEGIN;'}
-  TRANSACTION_END   = {:sql_server => "COMMIT TRANSACTION\nGO", :postgresql => 'COMMIT;'}
+  TRANSACTION_START = {:sql_server => 'BEGIN TRANSACTION',  :postgresql => 'BEGIN;'}
+  TRANSACTION_END   = {:sql_server => "COMMIT TRANSACTION", :postgresql => 'COMMIT;'}
 
   # Create an SqlScript. The db_type parameter must be :sql_server or :postgresql.
   def initialize(db_type)

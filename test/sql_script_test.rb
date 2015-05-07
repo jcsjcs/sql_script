@@ -16,7 +16,7 @@ class TestSqlScript < Minitest::Test
 
   def test_transaction_syntax_sql
     s   = SqlScript.new(:sql_server)
-    exp = "BEGIN TRANSACTION\nCOMMIT TRANSACTION\nGO\n"
+    exp = "BEGIN TRANSACTION\nCOMMIT TRANSACTION\n"
     assert_equal exp, s.to_script
   end
 
@@ -31,10 +31,8 @@ class TestSqlScript < Minitest::Test
     exp = <<EOS
 BEGIN TRANSACTION
 INSERT INTO lists (id, text, num, dt, tm)
-VALUES (12, 'A String', 12.123, '2015-01-01', '2015-01-01T10:01:22+02:00')
-GO
+VALUES (12, 'A String', 12.123, '2015-01-01', '2015-01-01T10:01:22+02:00');
 COMMIT TRANSACTION
-GO
 EOS
     row        = SqlRow.new(SqlRowType.new('lists', :id => :integer, :text => :string, :num => :numeric, :dt => :date, :tm => :time))
     row[:id]   = 12

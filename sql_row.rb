@@ -6,7 +6,7 @@ class SqlRow
 
   attr_reader :sql_row_type
 
-  STATEMENT_TERMINATOR = {:sql_server => "\nGO", :postgresql => ';' }
+  STATEMENT_TERMINATOR = {:sql_server => ";", :postgresql => ';' }
 
   # Create an SqlRow. Requires an SqlRowType parameter.
   def initialize(sql_row_type)
