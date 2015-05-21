@@ -32,7 +32,7 @@ class SqlRow
 
     case sql_row_type.data_type_of(field)
     when :string
-      "'#{val}'"
+      "'#{val.to_s.gsub(/'/,"''")}'"
     when :date
       "'#{val.strftime('%Y-%m-%d')}'"
     when :time

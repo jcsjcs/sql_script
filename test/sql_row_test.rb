@@ -19,9 +19,15 @@ class TestSqlRow < Minitest::Test
     assert_equal '12.123', row.sql_for(:num)
   end
 
+  def test_numeric_string
+    row       = SqlRow.new(SqlRowType.new('table', :id => :integer, :num => :numeric))
+    row[:num] = '12.123'
+    assert_equal '12.123', row.sql_for(:num)
+  end
+
   def test_numeric_value_alt
     row       = SqlRow.new(SqlRowType.new('table', :id => :integer, :num => :numeric))
-    row[:num] = 12.123
+    row.set_value(:num, 12.123)
     assert_equal '12.123', row.sql_for(:num)
   end
 
@@ -29,6 +35,12 @@ class TestSqlRow < Minitest::Test
     row        = SqlRow.new(SqlRowType.new('table', :id => :integer, :text => :string))
     row[:text] = 12
     assert_equal "'12'", row.sql_for(:text)
+  end
+
+  def test_quoted_string_value
+    row        = SqlRow.new(SqlRowType.new('table', :id => :integer, :text => :string))
+    row[:text] = "1 o'clock"
+    assert_equal "'1 o''clock'", row.sql_for(:text)
   end
   # VALID_FIELD_TYPES = [:integer, :numeric, :string, :date, :time]
 
