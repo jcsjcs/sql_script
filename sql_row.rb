@@ -26,7 +26,7 @@ class SqlRow
   end
 
   # Return String - the value for field as required in SQL statement string.
-  def sql_for(field)
+  def sql_for(field, db_type)
     val = @row_values[field]
     return 'NULL' if val.nil?
 
@@ -37,8 +37,25 @@ class SqlRow
       "'#{val.strftime('%Y-%m-%d')}'"
     when :time
       "'#{val.iso8601}'"
+    when :boolean
+      if :sql_server == db_type
+        convert_to_boolean(val) ? '1' : '0'
+      else
+        convert_to_boolean(val) ? "'t'" : "'f'"
+      end
     else
       val.to_s
+    end
+  end
+
+  # Converts various boolean representations to true or false
+  def convert_to_boolean(val)
+    if val.is_a? String
+      val =~ (/^(true|t|yes|y|1)$/i)
+    elsif val.is_a? Fixnum
+      !val.zero?
+    else
+      val
     end
   end
 
@@ -55,7 +72,7 @@ class SqlRow
     fields = sql_row_type.field_names
     s << fields.map {|f| f.to_s }.join(', ') << ")\n"
     s << "VALUES ("
-    s << fields.map {|f| sql_for(f) }.join(', ')
+    s << fields.map {|f| sql_for(f, db_type) }.join(', ')
     s << ")#{STATEMENT_TERMINATOR[db_type]}\n"
     s
   end

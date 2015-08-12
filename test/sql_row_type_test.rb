@@ -7,7 +7,7 @@ class TestSqlRowType < Minitest::Test
   end
 
   def test_data_types
-    types        = {:id => :integer, :num => :numeric, :text => :string, :dt => :date, :tm => :time}
+    types        = {:id => :integer, :num => :numeric, :text => :string, :dt => :date, :tm => :time, :bool =>:boolean}
     sql_row_type = SqlRowType.new('table', types)
 
     types.each do |field, data_type|

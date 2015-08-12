@@ -5,7 +5,7 @@ class SqlRowType
   attr_reader :table_name
   # May need to format numerics in some way....(numeric(10,2) vs numeric(10,5) and so on)
 
-  VALID_FIELD_TYPES = [:integer, :numeric, :string, :date, :time]
+  VALID_FIELD_TYPES = [:integer, :numeric, :string, :date, :time, :boolean]
 
   # Create an SqlRowType.
   # Parameters are the table name and a Hash of :field_name => :data_type.
