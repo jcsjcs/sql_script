@@ -43,6 +43,13 @@ class SqlRow
       else
         convert_to_boolean(val) ? "'t'" : "'f'"
       end
+    when :numeric
+      tmp = val.to_s
+      if tmp.length > 50 # Reduce number of digits after decimal
+        BigDecimal(tmp).round(20).to_s
+      else
+        tmp
+      end
     else
       val.to_s
     end

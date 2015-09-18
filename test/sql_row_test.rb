@@ -1,4 +1,5 @@
 require "test_helper"
+require 'bigdecimal'
 
 class TestSqlRow < Minitest::Test
 
@@ -23,6 +24,20 @@ class TestSqlRow < Minitest::Test
     row       = SqlRow.new(SqlRowType.new('table', :id => :integer, :num => :numeric))
     row[:num] = '12.123'
     assert_equal '12.123', row.sql_for(:num, :postgresql)
+  end
+
+  def test_large_numeric
+    row       = SqlRow.new(SqlRowType.new('table', :id => :integer, :num => :numeric))
+    row[:num] = BigDecimal('288910.76024400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000289827')
+    # assert_equal '288910.760244', row.sql_for(:num, :postgresql)
+    assert_equal '0.288910760244E6', row.sql_for(:num, :postgresql)
+  end
+
+  def test_large_numeric_string
+    row       = SqlRow.new(SqlRowType.new('table', :id => :integer, :num => :numeric))
+    row[:num] = '288910.76024400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000289827'
+    # assert_equal '288910.760244', row.sql_for(:num, :postgresql)
+    assert_equal '0.288910760244E6', row.sql_for(:num, :postgresql)
   end
 
   def test_numeric_value_alt
