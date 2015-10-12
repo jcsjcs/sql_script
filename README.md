@@ -32,6 +32,11 @@ script.rows << nrow
 
 # Produce a script
 puts script.to_script
+
+puts "\nBULK e.g.\n"
+
+# Produce a bulk insert script
+puts script.to_bulk_insert_script
 ```
 Output:
 ```sql
@@ -40,5 +45,13 @@ INSERT INTO users (id, first_name, surname, date_added)
 VALUES (NULL, 'John', 'Doe', '2015-04-29');
 INSERT INTO users (id, first_name, surname, date_added)
 VALUES (NULL, 'Jane', 'Doe', '2015-04-29');
+COMMIT;
+
+BULK
+
+BEGIN;
+INSERT INTO users (id, first_name, surname, date_added) VALUES
+(NULL, 'John', 'Doe', '2015-04-29'),
+(NULL, 'Jane', 'Doe', '2015-04-29');
 COMMIT;
 ```
