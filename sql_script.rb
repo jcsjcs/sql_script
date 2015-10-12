@@ -39,4 +39,23 @@ class SqlScript
     s << "#{TRANSACTION_END[db_type]}\n"
     s
   end
+
+  # Get bulk insert_sql from rows (SqlRow) and wrap in a transaction.
+  # For homogenous rows - does a bulk insert for every 500 rows.
+  # Returns String - SQL script.
+  def to_bulk_insert_script
+    s = TRANSACTION_START[db_type].dup
+    s << "\n"
+    insert_command = rows.first.bulk_insert_str
+
+    rows.each_slice(500) do |sliced_rows|
+      s << insert_command
+      s << sliced_rows.map {|row| row.bulk_insert_values_str(db_type) }.join(",\n")
+      s << "#{SqlRow::STATEMENT_TERMINATOR[db_type]}\n"
+    end
+
+    s << "#{TRANSACTION_END[db_type]}\n"
+    s
+  end
+
 end

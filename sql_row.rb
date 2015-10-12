@@ -83,4 +83,20 @@ class SqlRow
     s << ")#{STATEMENT_TERMINATOR[db_type]}\n"
     s
   end
+
+  # Returns String - the first part of an INSERT statement for bulk inserts.
+  #
+  #     INSERT INTO table (col, col, ...) VALUES
+  def bulk_insert_str
+    fields = sql_row_type.field_names
+    "INSERT INTO #{sql_row_type.table_name} (#{fields.map {|f| f.to_s }.join(', ')}) VALUES\n"
+  end
+
+  # Returns String - the values part of a bulk insert statement for one row.
+  #
+  #     (val, val, ...)
+  def bulk_insert_values_str( db_type )
+    fields = sql_row_type.field_names
+    "(#{fields.map {|f| sql_for(f, db_type) }.join(', ')})"
+  end
 end
